@@ -17,7 +17,7 @@ const router = createRouter({
                 {
                     path: '/building',
                     name: 'home-building',
-                    component: () => import('../views/AboutView.vue')
+                    component: () => import('../views/BuildingView.vue')
                 },
                 {
                     path: '/electricity',

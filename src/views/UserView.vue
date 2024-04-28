@@ -94,8 +94,6 @@ function search() {
       studentNo: formInline.studentNo,
     }
   }).then(res => {
-    const pages = res.data.totalPages;
-
     formInline.total = res.data.totalElements;
     // 清空表格数据
     tableData.splice(0, tableData.length);

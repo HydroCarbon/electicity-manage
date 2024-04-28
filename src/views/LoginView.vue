@@ -28,7 +28,7 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">登录</el-button>
-              <el-button>注册</el-button>
+              <el-button @click="router.push('/register')">注册</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -41,6 +41,7 @@
 import {reactive, ref} from "vue";
 import axios from "axios";
 import http from "@/api/api.js";
+import router from "@/router/index.js";
 
 const loginForm = reactive({
   username: '',

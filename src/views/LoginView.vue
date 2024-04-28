@@ -52,6 +52,7 @@ function onSubmit() {
   http.post('/api/auth/login', loginForm).then(res => {
     console.log(res.data.token);
     localStorage.setItem('token', res.data.token);
+    localStorage.setItem('userId', res.data.userId);
     window.location.href = '/';
   }).catch(err => {
     console.log(err);

@@ -6,7 +6,9 @@
           <Aside/>
         </el-aside>
         <el-container>
-          <el-header class="header"></el-header>
+          <el-header class="header">
+            <Header/>
+          </el-header>
           <el-main class="main">
             <router-view/>
           </el-main>
@@ -18,10 +20,11 @@
 
 <script>
 import Aside from "@/components/Aside.vue";
+import Header from "@/components/Header.vue";
 
 export default {
   name: 'app',
-  components: {Aside},
+  components: {Header, Aside},
   setup() {
 
   },
@@ -43,6 +46,6 @@ body,
 }
 
 .header {
-  background-color: #545c64;
+  background-color: rgba(239, 230, 230, 0.31);
 }
 </style>

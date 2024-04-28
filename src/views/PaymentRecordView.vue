@@ -24,12 +24,11 @@
     </el-form-item>
   </el-form>
   <el-table :data="tableData" border style="width: 100%">
+    <el-table-column prop="username" label="姓名"/>
     <el-table-column prop="building" label="楼栋"/>
     <el-table-column prop="room" label="房间"/>
-    <el-table-column prop="electricity" label="用电量"/>
-    <el-table-column prop="cost" label="花费"/>
-    <el-table-column prop="startTime" label="开始时间"/>
-    <el-table-column prop="endTime" label="结束时间"/>
+    <el-table-column prop="cost" label="充值金额"/>
+    <el-table-column prop="paymentTime" label="支付时间"/>
     <el-table-column fixed="right" label="操作">
       <template #default="scope">
         <el-button link type="primary" size="small" @click.prevent="detail(scope.$index)">
@@ -45,46 +44,27 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"/>
 
-  <el-button type="primary" @click="addVisible = true">添加</el-button>
+  <el-button type="primary" @click="addVisible = true">充值</el-button>
 
   <el-dialog
       v-model="addVisible"
-      title="添加用电记录"
+      title="充值"
       width="500"
       align-center
   >
     <span>
       <el-form :label-position="labelPosition" label-width="auto"
                :model="recordForm" style="max-width: 600px">
-            <el-form-item label="房间">
-              <el-select v-model="recordForm.roomId" placeholder="房间" clearable>
-                <el-option
-                    v-for="item in buildingInfo"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="用电量">
-              <el-input v-model="recordForm.electricity"/>
+            <el-form-item label="充值金额">
+              <el-input v-model="recordForm.amount"/>
               </el-form-item>
-        <el-form-item label="时间范围">
-      <el-date-picker
-          v-model="recordForm.timeRange"
-          type="datetimerange"
-          range-separator="至"
-          start-placeholder="开始时间"
-          end-placeholder="结束时间"
-      />
-    </el-form-item>
           </el-form>
     </span>
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="addVisible = false">取消</el-button>
         <el-button type="primary" @click="submitRecord">
-          保存
+          确定
         </el-button>
       </div>
     </template>
@@ -99,28 +79,21 @@
     <span>
       <el-form :label-position="labelPosition" label-width="auto"
                :model="detailForm" style="max-width: 600px">
+        <el-form-item label="姓名">
+              <el-input v-model="detailForm.name" disabled/>
+            </el-form-item>
             <el-form-item label="楼栋">
               <el-input v-model="detailForm.building" disabled/>
             </el-form-item>
             <el-form-item label="房间">
               <el-input v-model="detailForm.room" disabled/>
             </el-form-item>
-        <el-form-item label="用电量">
-              <el-input v-model="detailForm.electricity" disabled/>
-            </el-form-item>
-        <el-form-item label="花费">
+        <el-form-item label="充值金额">
               <el-input v-model="detailForm.cost" disabled/>
             </el-form-item>
-        <el-form-item label="时间范围">
-      <el-date-picker
-          v-model="detailForm.timeRange"
-          type="datetimerange"
-          range-separator="至"
-          start-placeholder="开始时间"
-          end-placeholder="结束时间"
-          disabled
-      />
-    </el-form-item>
+        <el-form-item label="充值时间">
+              <el-input v-model="detailForm.paymentTime" disabled/>
+            </el-form-item>
           </el-form>
     </span>
     <template #footer>
@@ -160,20 +133,15 @@ const labelPosition = ref<FormProps['labelPosition']>('right')
 
 const recordForm = reactive({
   roomId: '',
-  electricity: '',
-  timeRange: [null,
-    null
-  ],
+  amount: '',
 })
 
 const detailForm = reactive({
+  name: '',
   building: '',
   room: '',
-  electricity: '',
   cost: '',
-  timeRange: [null,
-    null
-  ],
+  paymentTime: '',
 })
 
 const onSubmit = () => {
@@ -190,7 +158,7 @@ const handleCurrentChange = (val: number) => {
 }
 
 function search() {
-  http.get('/api/electricity/record/list', {
+  http.get('/api/electricity/payment/list', {
     params: {
       pageNo: formInline.pageNo ? formInline.pageNo - 1 : 0,
       pageSize: formInline.pageSize ? formInline.pageSize : 10,
@@ -202,15 +170,14 @@ function search() {
     formInline.total = res.data.totalElements;
     // 清空表格数据
     tableData.splice(0, tableData.length);
-    res.data.content.forEach((electricity: any) => {
+    res.data.content.forEach((record: any) => {
       tableData.push({
-        id: electricity.id,
-        building: electricity.building,
-        room: electricity.room,
-        electricity: electricity.electricity,
-        cost: electricity.cost,
-        startTime: electricity.startTime,
-        endTime: electricity.endTime,
+        id: record.id,
+        username: record.username,
+        building: record.building,
+        room: record.room,
+        cost: record.cost,
+        paymentTime: record.paymentTime,
       })
     })
   }).catch(err => {
@@ -220,12 +187,8 @@ function search() {
 
 function submitRecord() {
   addVisible.value = false;
-  http.put('/api/electricity/record/add', {
-    roomId: recordForm.roomId,
-    electricity: recordForm.electricity,
-    // 时间格式 2024-04-27T00:42:30.930297
-    startTime: recordForm.timeRange ? recordForm.timeRange[0].toISOString() : null,
-    endTime: recordForm.timeRange ? recordForm.timeRange[1].toISOString() : null,
+  http.put('/api/electricity/record/pay', {
+    amount: recordForm.amount,
   }).then(res => {
     search();
   }).catch(err => {
@@ -253,16 +216,12 @@ onMounted(() => {
 })
 
 const detail = (index: number) => {
-  http.get(`/api/electricity/record/${tableData[index].id}`).then(res => {
-    detailForm.building = res.data.building;
-    detailForm.room = res.data.room;
-    detailForm.electricity = res.data.electricity;
-    detailForm.cost = res.data.cost;
-    detailForm.timeRange = [new Date(res.data.startTime), new Date(res.data.endTime)];
-    detailVisible.value = true;
-  }).catch(err => {
-    console.log(err);
-  })
+  detailForm.name = tableData[index].username;
+  detailForm.building = tableData[index].building;
+  detailForm.room = tableData[index].room;
+  detailForm.cost = tableData[index].cost;
+  detailForm.paymentTime = tableData[index].paymentTime;
+  detailVisible.value = true;
 }
 </script>
 

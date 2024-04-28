@@ -87,7 +87,7 @@
 <script lang="ts" setup>
 import http from "@/api/api";
 import {onMounted, reactive, ref} from "vue";
-import {FormProps} from "element-plus";
+import {ElMessage, FormProps} from "element-plus";
 
 const buildingSubmitDialog = ref(false)
 
@@ -178,6 +178,7 @@ function submitBuilding() {
   }).then(() => {
     buildingSubmitDialog.value = false;
     getBuildingTree();
+    ElMessage.success('新增成功');
   }).catch(err => {
     console.log(err);
   })
@@ -190,6 +191,7 @@ function submitRoom() {
   }).then(() => {
     roomSubmitDialog.value = false;
     getBuildingTree();
+    ElMessage.success('新增成功');
   }).catch(err => {
     console.log(err);
   })

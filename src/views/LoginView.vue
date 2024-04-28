@@ -42,6 +42,7 @@ import {reactive, ref} from "vue";
 import axios from "axios";
 import http from "@/api/api.js";
 import router from "@/router/index.js";
+import {ElMessage} from "element-plus";
 
 const loginForm = reactive({
   username: '',
@@ -50,12 +51,16 @@ const loginForm = reactive({
 
 function onSubmit() {
   http.post('/api/auth/login', loginForm).then(res => {
-    console.log(res.data.token);
+    if (res.code === 401) {
+      ElMessage.error('用户名或密码错误');
+      return;
+    }
     localStorage.setItem('token', res.data.token);
     localStorage.setItem('userId', res.data.userId);
     window.location.href = '/';
   }).catch(err => {
     console.log(err);
+    ElMessage.error('用户名或密码错误');
   });
 }
 </script>

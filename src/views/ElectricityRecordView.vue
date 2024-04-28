@@ -134,7 +134,7 @@
 <script lang="ts" setup>
 import http from '@/api/api';
 import {onMounted, reactive, ref} from 'vue'
-import {FormProps} from "element-plus";
+import {ElMessage, FormProps} from "element-plus";
 
 const tableData = reactive([])
 
@@ -228,6 +228,7 @@ function submitRecord() {
     endTime: recordForm.timeRange ? recordForm.timeRange[1].toISOString() : null,
   }).then(res => {
     search();
+    ElMessage.success('新增成功');
   }).catch(err => {
     console.log(err);
   })

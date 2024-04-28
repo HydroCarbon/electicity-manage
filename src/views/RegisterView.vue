@@ -63,6 +63,7 @@
 import {onMounted, reactive, ref} from "vue";
 import http from "@/api/api.js";
 import router from "@/router/index.js";
+import {ElMessage} from "element-plus";
 
 const buildingInfo = reactive([])
 
@@ -98,6 +99,7 @@ onMounted(() => {
 function onSubmit() {
   http.post('/api/auth/register', loginForm).then(() => {
     window.location.href = '/login';
+    ElMessage.success('注册成功');
   }).catch(err => {
     console.log(err);
   });

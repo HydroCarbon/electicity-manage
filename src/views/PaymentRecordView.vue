@@ -107,7 +107,7 @@
 <script lang="ts" setup>
 import http from '@/api/api';
 import {onMounted, reactive, ref} from 'vue'
-import {FormProps} from "element-plus";
+import {ElMessage, FormProps} from "element-plus";
 
 const tableData = reactive([])
 
@@ -191,6 +191,7 @@ function submitRecord() {
     amount: recordForm.amount,
   }).then(res => {
     search();
+    ElMessage.success('充值成功');
   }).catch(err => {
     console.log(err);
   })

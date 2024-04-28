@@ -40,7 +40,7 @@
 <script setup>
 import {reactive, ref} from "vue";
 import axios from "axios";
-import instance from "@/api/api.js";
+import http from "@/api/api.js";
 
 const loginForm = reactive({
   username: '',
@@ -48,7 +48,7 @@ const loginForm = reactive({
 })
 
 function onSubmit() {
-  instance.post('/api/auth/login', loginForm).then(res => {
+  http.post('/api/auth/login', loginForm).then(res => {
     console.log(res.data.token);
     localStorage.setItem('token', res.data.token);
     window.location.href = '/';

@@ -11,7 +11,7 @@
       <el-dialog v-model="roomSubmitDialog" title="新增楼栋" width="500" align-center>
         <span>
           <el-form :label-position="labelPosition" label-width="auto"
-                   :model="buildingForm" style="max-width: 600px">
+                   :model="roomForm" style="max-width: 600px">
             <el-form-item label="名称">
               <el-select v-model="roomForm.buildingId" placeholder="楼栋" clearable>
                 <el-option
@@ -85,7 +85,7 @@
 </template>
 
 <script lang="ts" setup>
-import instance from "@/api/api";
+import http from "@/api/api";
 import {onMounted, reactive, ref} from "vue";
 import {FormProps} from "element-plus";
 
@@ -109,7 +109,7 @@ const handleNodeClick = (data: Tree) => {
     roomId = data.id;
   }
 
-  instance.get('/api/building/users', {
+  http.get('/api/building/users', {
     params: {
       buildingId: buildingId,
       roomId: roomId
@@ -133,7 +133,7 @@ const handleNodeClick = (data: Tree) => {
 }
 
 function getBuildingTree() {
-  instance.get('/api/building/list').then(res => {
+  http.get('/api/building/list').then(res => {
     // 清空 data
     data.splice(0, data.length);
 
@@ -171,7 +171,7 @@ const defaultProps = {
 }
 
 function submitBuilding() {
-  instance.put('/api/building', {}, {
+  http.put('/api/building', {}, {
     params: {
       name: buildingForm.name
     }
@@ -184,7 +184,7 @@ function submitBuilding() {
 }
 
 function submitRoom() {
-  instance.put('/api/building/room', {
+  http.put('/api/building/room', {
     name: roomForm.name,
     buildingId: roomForm.buildingId
   }).then(() => {

@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import instance from '@/api/api';
+import http from '@/api/api';
 import {onMounted, reactive, ref} from 'vue'
 
 const formInline = reactive({
@@ -85,7 +85,7 @@ const handleCurrentChange = (val: number) => {
 }
 
 function search() {
-  instance.get('/api/user/list', {
+  http.get('/api/user/list', {
     params: {
       pageNo: 0,
       pageSize: 20,
@@ -114,7 +114,7 @@ function search() {
 }
 
 onMounted(() => {
-  instance.get('/api/building/list').then(res => {
+  http.get('/api/building/list').then(res => {
     res.data.forEach((building: any) => {
       const rooms = building.rooms;
       rooms.forEach((room: any) => {

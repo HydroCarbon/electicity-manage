@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 // 创建一个 Axios 实例
-const instance = axios.create({
+const http = axios.create({
     baseURL: '', // 设置默认请求的基本URL
     timeout: 10000, // 请求超时时间
 });
 
 // 请求拦截器
-instance.interceptors.request.use(
+http.interceptors.request.use(
     config => {
         // 登录不需要 token
         if (config.url === '/api/auth/login' || config.url === '/api/auth/register') {
@@ -22,7 +22,7 @@ instance.interceptors.request.use(
 );
 
 // 响应拦截器
-instance.interceptors.response.use(
+http.interceptors.response.use(
     response => {
         return response.data;
     },
@@ -33,22 +33,22 @@ instance.interceptors.response.use(
 
 // 封装 GET 请求
 export const get = (url, params) => {
-    return instance.get(url, {params});
+    return http.get(url, {params});
 };
 
 // 封装 POST 请求
 export const post = (url, data) => {
-    return instance.post(url, data);
+    return http.post(url, data);
 };
 
 // 封装 PUT 请求
 export const put = (url, data) => {
-    return instance.put(url, data);
+    return http.put(url, data);
 };
 
 // 封装 DELETE 请求
 export const del = (url) => {
-    return instance.delete(url);
+    return http.delete(url);
 };
 
-export default instance;
+export default http;

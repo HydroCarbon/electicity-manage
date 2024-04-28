@@ -26,7 +26,7 @@ const router = createRouter({
                         {
                             path: '/electricity/record',
                             name: 'home-electricity-usage',
-                            component: () => import('../views/AboutView.vue')
+                            component: () => import('../views/ElectricityRecordView.vue')
                         }
                     ]
                 },
@@ -37,7 +37,7 @@ const router = createRouter({
                         {
                             path: '/payment/record',
                             name: 'home-payment-record',
-                            component: () => import('../views/AboutView.vue')
+                            component: () => import('../views/PaymentRecordView.vue')
                         }
                     ]
                 }

@@ -1,58 +1,61 @@
 <template>
-  <el-form :inline="true" :model="formInline" class="demo-form-inline">
-    <el-form-item label="房间">
-      <el-select v-model="formInline.roomId" placeholder="房间" clearable>
-        <el-option
-            v-for="item in buildingInfo"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-        />
-      </el-select>
-    </el-form-item>
-    <el-form-item label="时间范围">
-      <el-date-picker
-          v-model="formInline.timeRange"
-          type="datetimerange"
-          range-separator="至"
-          start-placeholder="开始时间"
-          end-placeholder="结束时间"
-      />
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="onSubmit">搜索</el-button>
-    </el-form-item>
-  </el-form>
-  <el-table :data="tableData" border style="width: 100%">
-    <el-table-column prop="building" label="楼栋"/>
-    <el-table-column prop="room" label="房间"/>
-    <el-table-column prop="electricity" label="用电量"/>
-    <el-table-column prop="cost" label="花费"/>
-    <el-table-column prop="startTime" label="开始时间"/>
-    <el-table-column prop="endTime" label="结束时间"/>
-    <el-table-column fixed="right" label="操作">
-      <template #default="scope">
-        <el-button link type="primary" size="small" @click.prevent="detail(scope.$index)">
-          详情
-        </el-button>
-      </template>
-    </el-table-column>
-  </el-table>
-  <el-pagination
-      :page-size="formInline.pageSize"
-      layout="prev, pager, next"
-      :total="formInline.total"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"/>
+  <el-col :span="24">
+    <el-row>
+      <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form-item label="房间">
+          <el-select v-model="formInline.roomId" placeholder="房间" clearable>
+            <el-option
+                v-for="item in buildingInfo"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="时间范围">
+          <el-date-picker
+              v-model="formInline.timeRange"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="开始时间"
+              end-placeholder="结束时间"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">搜索</el-button>
+        </el-form-item>
+      </el-form>
+      <el-table :data="tableData" border style="width: 100%">
+        <el-table-column prop="building" label="楼栋"/>
+        <el-table-column prop="room" label="房间"/>
+        <el-table-column prop="electricity" label="用电量"/>
+        <el-table-column prop="cost" label="花费"/>
+        <el-table-column prop="startTime" label="开始时间"/>
+        <el-table-column prop="endTime" label="结束时间"/>
+        <el-table-column fixed="right" label="操作">
+          <template #default="scope">
+            <el-button link type="primary" size="small" @click.prevent="detail(scope.$index)">
+              详情
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+          :page-size="formInline.pageSize"
+          layout="prev, pager, next"
+          :total="formInline.total"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"/>
+    </el-row>
 
-  <el-button type="primary" @click="addVisible = true">添加</el-button>
-
-  <el-dialog
-      v-model="addVisible"
-      title="添加用电记录"
-      width="500"
-      align-center
-  >
+    <el-row>
+      <el-button type="primary" @click="addVisible = true">添加</el-button>
+      <el-dialog
+          v-model="addVisible"
+          title="添加用电记录"
+          width="500"
+          align-center
+      >
     <span>
       <el-form :label-position="labelPosition" label-width="auto"
                :model="recordForm" style="max-width: 600px">
@@ -80,22 +83,22 @@
     </el-form-item>
           </el-form>
     </span>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="addVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitRecord">
-          保存
-        </el-button>
-      </div>
-    </template>
-  </el-dialog>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button @click="addVisible = false">取消</el-button>
+            <el-button type="primary" @click="submitRecord">
+              保存
+            </el-button>
+          </div>
+        </template>
+      </el-dialog>
 
-  <el-dialog
-      v-model="detailVisible"
-      title="用电记录详情"
-      width="500"
-      align-center
-  >
+      <el-dialog
+          v-model="detailVisible"
+          title="用电记录详情"
+          width="500"
+          align-center
+      >
     <span>
       <el-form :label-position="labelPosition" label-width="auto"
                :model="detailForm" style="max-width: 600px">
@@ -123,12 +126,14 @@
     </el-form-item>
           </el-form>
     </span>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="detailVisible = false">关闭</el-button>
-      </div>
-    </template>
-  </el-dialog>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button @click="detailVisible = false">关闭</el-button>
+          </div>
+        </template>
+      </el-dialog>
+    </el-row>
+  </el-col>
 </template>
 
 <script lang="ts" setup>

@@ -44,7 +44,7 @@
 
 <script lang="ts" setup>
 import {onMounted, reactive, ref} from 'vue'
-import type {FormProps} from 'element-plus'
+import {ElMessage, FormProps} from 'element-plus'
 import http from '@/api/api';
 
 const labelPosition = ref<FormProps['labelPosition']>('left')
@@ -72,6 +72,7 @@ const editInfo = () => {
     studentNo: formLabelAlign.studentNo,
     role: formLabelAlign.role
   }).then(res => {
+    ElMessage.success('修改成功');
     console.log(res);
   }).catch(err => {
     console.log(err);

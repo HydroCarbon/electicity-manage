@@ -24,7 +24,7 @@
 
   <el-dialog
       v-model="showChangePasswordDialog"
-      title="添加用电记录"
+      title="添修改密码"
       width="500"
       align-center
   >
@@ -69,6 +69,7 @@ const passwordForm = reactive({
 const changePassword = () => {
   if (passwordForm.password !== passwordForm.confirmPassword) {
     ElMessage.error('密码不匹配，请重新输入')
+    return
   }
 
   const userId = localStorage.getItem('userId')

@@ -8,7 +8,7 @@
         新增房间
       </el-button>
 
-      <el-dialog v-model="roomSubmitDialog" title="新增楼栋" width="500" align-center>
+      <el-dialog v-model="roomSubmitDialog" title="新增房间" width="500" align-center>
         <span>
           <el-form :label-position="labelPosition" label-width="auto"
                    :model="roomForm" style="max-width: 600px">
